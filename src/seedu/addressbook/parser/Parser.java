@@ -70,6 +70,9 @@ public class Parser {
 
             case FindCommand.COMMAND_WORD:
                 return prepareFind(arguments);
+            
+            case FindAndDeleteCommand.COMMAND_WORD:
+                return prepareFindAndDelete(arguments);
 
             case ListCommand.COMMAND_WORD:
                 return new ListCommand();
@@ -228,5 +231,22 @@ public class Parser {
         return new FindCommand(keywordSet);
     }
 
+    /**
+     * Parses arguments in the context of the findAndDelete person command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareFindAndDelete(String args) {
+        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    FindAndDeleteCommand.MESSAGE_USAGE));
+        }
 
+        // keywords delimited by whitespace
+        final String[] keywords = matcher.group("keywords").split("\\s+");
+        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+        return new FindAndDeleteCommand(keywordSet);
+    }
 }
