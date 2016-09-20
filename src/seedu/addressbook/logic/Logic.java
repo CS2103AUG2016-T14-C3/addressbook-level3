@@ -34,9 +34,11 @@ public class Logic {
     }
 
     
-    Logic(StorageFile storageFile, AddressBook addressBook){
+    Logic(StorageFile storageFile, AddressBook addressBook) throws Exception{
         setStorage(storageFile);
         setAddressBook(addressBook);
+        password = new PasswordFile();
+        myPassword = password.load();
     }
 
     public boolean ChangePassword(String oldPassword, String newPassword) {

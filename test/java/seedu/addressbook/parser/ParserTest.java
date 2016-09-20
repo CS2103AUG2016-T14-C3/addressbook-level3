@@ -7,6 +7,7 @@ import seedu.addressbook.data.exception.IllegalValueException;
 import seedu.addressbook.data.tag.Tag;
 import seedu.addressbook.data.tag.UniqueTagList;
 import seedu.addressbook.data.person.*;
+import seedu.addressbook.logic.Logic;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -294,7 +295,7 @@ public class ParserTest {
      * @return the parsed command object
      */
     private <T extends Command> T parseAndAssertCommandType(String input, Class<T> expectedCommandClass) {
-        final Command result = parser.parseCommand(input);
+        final Command result = parser.parseCommand(input, null); // No Password Change Allowed
         assertTrue(result.getClass().isAssignableFrom(expectedCommandClass));
         return (T) result;
     }
