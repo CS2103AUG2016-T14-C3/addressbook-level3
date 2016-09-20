@@ -37,6 +37,16 @@ public abstract class Command {
     }
 
     /**
+     * Constructs a feedback message to summarise a delete operation that displayed a listing of persons.
+     *
+     * @param personsDisplayed used to generate summary
+     * @return summary message for persons displayed
+     */
+    public static String getMessageForPersonDeletedListShownSummary(List<? extends ReadOnlyPerson> personsDisplayed) {
+        return String.format(Messages.MESSAGE_PERSONS_DELETED_OVERVIEW, personsDisplayed.size());
+    }
+    
+    /**
      * Executes the command and returns the result.
      */
     public abstract CommandResult execute();
