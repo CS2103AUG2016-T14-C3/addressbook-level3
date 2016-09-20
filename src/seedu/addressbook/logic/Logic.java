@@ -6,6 +6,7 @@ import seedu.addressbook.data.AddressBook;
 import seedu.addressbook.data.person.ReadOnlyPerson;
 import seedu.addressbook.parser.Parser;
 import seedu.addressbook.storage.StorageFile;
+import seedu.addressbook.password.PasswordFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +20,8 @@ public class Logic {
 
     private StorageFile storage;
     private AddressBook addressBook;
+    private String myPassword;
+    private PasswordFile password;
 
     /** The list of person shown to the user most recently.  */
     private List<? extends ReadOnlyPerson> lastShownList = Collections.emptyList();
@@ -26,13 +29,26 @@ public class Logic {
     public Logic() throws Exception{
         setStorage(initializeStorage());
         setAddressBook(storage.load());
+        password = new PasswordFile();
+        myPassword = password.load();
     }
 
+    
     Logic(StorageFile storageFile, AddressBook addressBook){
         setStorage(storageFile);
         setAddressBook(addressBook);
     }
 
+    public boolean ChangePassword(String oldPassword, String newPassword) {
+        if (myPassword.compareTo(oldPassword) == 0) {
+            password.save(newPassword);
+            myPassword = newPassword;
+        } else {
+        	return false;
+        }
+        return true;
+    }
+    
     void setStorage(StorageFile storage){
         this.storage = storage;
     }
@@ -69,7 +85,7 @@ public class Logic {
      * @throws Exception if there was any problem during command execution.
      */
     public CommandResult execute(String userCommandText) throws Exception {
-        Command command = new Parser().parseCommand(userCommandText);
+        Command command = new Parser().parseCommand(userCommandText, this);
         CommandResult result = execute(command);
         recordResult(result);
         return result;

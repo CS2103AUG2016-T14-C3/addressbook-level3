@@ -2,6 +2,7 @@ package seedu.addressbook.parser;
 
 import seedu.addressbook.commands.*;
 import seedu.addressbook.data.exception.IllegalValueException;
+import seedu.addressbook.logic.Logic;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -49,7 +50,7 @@ public class Parser {
      * @param userInput full user input string
      * @return the command based on the user input
      */
-    public Command parseCommand(String userInput) {
+    public Command parseCommand(String userInput, Logic logic) {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
@@ -59,6 +60,9 @@ public class Parser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
+            case ChangePasswordCommand.COMMAND_WORD:
+                return prepareChangePassword(arguments, logic);
+        
             case AddCommand.COMMAND_WORD:
                 return prepareAdd(arguments);
 
@@ -172,6 +176,23 @@ public class Parser {
         } catch (ParseException | NumberFormatException e) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     ViewCommand.MESSAGE_USAGE));
+        }
+    }
+    
+    /**
+     * Parses arguments in the context of the view all command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareChangePassword(String args, Logic logic) {
+        System.out.println(args);
+        String[] splited = args.trim().split("\\s+");
+        if (splited.length == 2) {
+        	return new ChangePasswordCommand(logic, splited[0], splited[1]);
+        } else {
+        	return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ChangePasswordCommand.MESSAGE_USAGE));
         }
     }
 
