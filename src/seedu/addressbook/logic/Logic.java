@@ -2,6 +2,7 @@ package seedu.addressbook.logic;
 
 import seedu.addressbook.commands.Command;
 import seedu.addressbook.commands.CommandResult;
+import seedu.addressbook.commands.ViewAllCommand;
 import seedu.addressbook.data.AddressBook;
 import seedu.addressbook.data.person.ReadOnlyPerson;
 import seedu.addressbook.parser.Parser;
@@ -16,6 +17,8 @@ import java.util.Optional;
  * Represents the main Logic of the AddressBook.
  */
 public class Logic {
+	
+	private String userpass = "";
 
 
     private StorageFile storage;
@@ -87,9 +90,29 @@ public class Logic {
      * @throws Exception if there was any problem during command execution.
      */
     public CommandResult execute(String userCommandText) throws Exception {
-        Command command = new Parser().parseCommand(userCommandText, this);
+    	
+    	String usertext = userCommandText;
+    	
+    	Command command;
+    	if (ViewAllCommand.flag){
+    		if (userCommandText.equals(password.load())) {
+    			command = new ViewAllCommand(1);
+    	    	System.out.println("viewall created");
+
+    		} else {
+    			ViewAllCommand.flag = false;
+    			command = new ViewAllCommand(ViewAllCommand.index);
+    		}
+    		
+    	} else {
+            command = new Parser().parseCommand(userCommandText, this);
+
+    	}
+    	
         CommandResult result = execute(command);
         recordResult(result);
+    	System.out.println("after execute");
+
         return result;
     }
 
@@ -104,7 +127,8 @@ public class Logic {
         command.setData(addressBook, lastShownList);
         CommandResult result = command.execute();
         storage.save(addressBook);
-        return result;
+        return result;  
+        
     }
 
     /** Updates the {@link #lastShownList} if the result contains a list of Persons. */
