@@ -1,5 +1,6 @@
 package seedu.addressbook.logic;
 
+import seedu.addressbook.commands.ClearCommand;
 import seedu.addressbook.commands.Command;
 import seedu.addressbook.commands.CommandResult;
 import seedu.addressbook.commands.ViewAllCommand;
@@ -91,7 +92,7 @@ public class Logic {
      */
     public CommandResult execute(String userCommandText) throws Exception {
     	
-    	String usertext = userCommandText;
+    	//String usertext = userCommandText;
     	
     	Command command;
     	if (ViewAllCommand.flag){
@@ -104,9 +105,13 @@ public class Logic {
     			command = new ViewAllCommand(ViewAllCommand.index);
     		}
     		
-    	} else {
+    	}
+    	else if(ClearCommand.answered) {
+    	    command = new ClearCommand();
+    	    ClearCommand.CONFIRM_ANSWER = userCommandText;
+    	}
+    	else {
             command = new Parser().parseCommand(userCommandText, this);
-
     	}
     	
         CommandResult result = execute(command);
