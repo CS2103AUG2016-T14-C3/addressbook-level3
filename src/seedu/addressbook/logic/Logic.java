@@ -1,5 +1,6 @@
 package seedu.addressbook.logic;
 
+import seedu.addressbook.commands.ClearCommand;
 import seedu.addressbook.commands.Command;
 import seedu.addressbook.commands.CommandResult;
 import seedu.addressbook.commands.ViewAllCommand;
@@ -90,23 +91,22 @@ public class Logic {
      * @throws Exception if there was any problem during command execution.
      */
     public CommandResult execute(String userCommandText) throws Exception {
-    	
-    	String usertext = userCommandText;
-    	
     	Command command;
     	if (ViewAllCommand.flag){
     		if (userCommandText.equals(password.load())) {
     			command = new ViewAllCommand(ViewAllCommand.index);
     	    	System.out.println("viewall created");
-
     		} else {
     			ViewAllCommand.flag = false;
     			command = new ViewAllCommand(ViewAllCommand.index);
     		}
-    		
-    	} else {
+    	}
+    	else if(ClearCommand.answered) {
+    	    command = new ClearCommand();
+    	    ClearCommand.CONFIRM_ANSWER = userCommandText;
+    	}
+    	else {
             command = new Parser().parseCommand(userCommandText, this);
-
     	}
     	
         CommandResult result = execute(command);
