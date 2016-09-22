@@ -91,20 +91,15 @@ public class Logic {
      * @throws Exception if there was any problem during command execution.
      */
     public CommandResult execute(String userCommandText) throws Exception {
-    	
-    	//String usertext = userCommandText;
-    	
     	Command command;
     	if (ViewAllCommand.flag){
     		if (userCommandText.equals(password.load())) {
     			command = new ViewAllCommand(ViewAllCommand.index);
     	    	System.out.println("viewall created");
-
     		} else {
     			ViewAllCommand.flag = false;
     			command = new ViewAllCommand(ViewAllCommand.index);
     		}
-    		
     	}
     	else if(ClearCommand.answered) {
     	    command = new ClearCommand();

@@ -164,12 +164,6 @@ public class Parser {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
     }
-    
-    /*
-    private Command prepareClear() {
-        new CommandResult(message);
-        return new ClearCommand();
-    }*/
 
     /**
      * Parses arguments in the context of the view command.
