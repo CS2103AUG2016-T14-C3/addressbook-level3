@@ -96,7 +96,7 @@ public class Logic {
     	Command command;
     	if (ViewAllCommand.flag){
     		if (userCommandText.equals(password.load())) {
-    			command = new ViewAllCommand(1);
+    			command = new ViewAllCommand(ViewAllCommand.index);
     	    	System.out.println("viewall created");
 
     		} else {
